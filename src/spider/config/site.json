@@ -1,5 +1,6 @@
 {
     "netease": {
+        "key": "netease",
         "name": "网易新闻",
         "site": "https://news.163.com/",
         "subSite": [],
@@ -12,6 +13,7 @@
         }
     },
     "sina": {
+        "key": "sina",
         "name": "新浪新闻",
         "site": "https://news.sina.com.cn/",
         "subSite": [],
@@ -24,6 +26,7 @@
         }
     },
     "tencent": {
+        "key": "tencent",
         "name": "腾讯新闻",
         "site": "https://news.qq.com/",
         "subSite": [],
@@ -36,15 +39,65 @@
         }
     },
     "people": {
+        "key": "people",
         "name": "人民网",
         "site": "http://www.people.com.cn/",
-        "subSite": [],
+        "subSite": {
+            "滚动": "http://news.people.com.cn/",
+            "时政": "http://politics.people.com.cn/",
+            "国际": "http://world.people.com.cn/",
+            "财经": "http://finance.people.com.cn/",
+            "台湾": "http://tw.people.com.cn/",
+            "军事": "http://military.people.com.cn/",
+            "观点": "http://opinion.people.com.cn/",
+            "领导": "http://leaders.people.com.cn/",
+            "视频": "http://v.people.cn/",
+            "人事": "http://renshi.people.com.cn/",
+            "理论": "http://theory.people.com.cn/",
+            "法治": "http://legal.people.com.cn/",
+            "社会": "http://society.people.com.cn/",
+            "产经": "http://industry.people.com.cn/",
+            "教育": "http://edu.people.com.cn/",
+            "科普": "http://kpzg.people.com.cn/",
+            "体育": "http://sports.people.com.cn/",
+            "文化": "http://culture.people.com.cn/",
+            "书画": "http://art.people.com.cn/",
+            "房产": "http://house.people.com.cn/",
+            "汽车": "http://auto.people.com.cn/",
+            "健康": "http://health.people.com.cn/",
+            "科技": "http://scitech.people.com.cn/"
+        },
         "htmlClass": {
             "header": "nav>div",
             "content": "",
             "footer": "",
             "side_left": "",
             "side_right": ""
+        },
+        "subLinks": {
+            "滚动": "http://news.people.com.cn/",
+            "时政": "http://politics.people.com.cn/",
+            "国际": "http://world.people.com.cn/",
+            "财经": "http://finance.people.com.cn/",
+            "台湾": "http://tw.people.com.cn/",
+            "军事": "http://military.people.com.cn/",
+            "观点": "http://opinion.people.com.cn/",
+            "领导": "http://leaders.people.com.cn/",
+            "视频": "http://v.people.cn/",
+            "人事": "http://renshi.people.com.cn/",
+            "理论": "http://theory.people.com.cn/",
+            "法治": "http://legal.people.com.cn/",
+            "社会": "http://society.people.com.cn/",
+            "产经": "http://industry.people.com.cn/",
+            "教育": "http://edu.people.com.cn/",
+            "科普": "http://kpzg.people.com.cn/",
+            "体育": "http://sports.people.com.cn/",
+            "文化": "http://culture.people.com.cn/",
+            "书画": "http://art.people.com.cn/",
+            "房产": "http://house.people.com.cn/",
+            "汽车": "http://auto.people.com.cn/",
+            "健康": "http://health.people.com.cn/",
+            "科技": "http://scitech.people.com.cn/"
         }
     }
 }

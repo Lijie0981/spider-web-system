@@ -2,27 +2,39 @@ const cheerio = require('cheerio');
 const debug = require('debug');
 const request = require('superagent');
 require('superagent-charset')(request);
-
+const siteConfPath = '/config/site.json';
+const SITE_CONF = require('./config/site.json');
+const fs = require('fs');
 class Spider {
     constructor (site) {
         this.site = site;
         this.log = debug(`spider:${this.site.name}`);
     }
     async getPageContent(url) {
-        let res = await request.get(url)
-                    .charset('gbk');
+        let res = {};
+        try {
+            res = await request.get(url)
+                    .charset('gbk'); 
+        } catch (error) {
+            return {};
+        }
         let page = '';
         if (res.text) {
             page = res.text;
+        } else {
+            page = '<html></html>';
         }
-        page = '<html></html>';
-        return cheerio.load(page);
+        let $ = cheerio.load(page);
+        return {$, res};
     }
     createDatabase() {
 
     }
-    setSubSites(subSite) {
-        this.site.subSite = subSite;
+    setSubLinks(subLinks) {
+        this.site.subLinks = subLinks;
+        SITE_CONF[this.site.key].subLinks = subLinks;
+        fs.writeFileSync(__dirname + siteConfPath, JSON.stringify(SITE_CONF));
+        this.log(SITE_CONF[this.site.key].subLinks);
         // TODO write into database
     }
     setArticle(acticle) {
@@ -31,6 +43,7 @@ class Spider {
     run () {}
     pause () {}
 }
+module.exports = { Spider };
 // let site = {
 //     site: 'http://www.people.com.cn/',
 //     name: '人民网'
