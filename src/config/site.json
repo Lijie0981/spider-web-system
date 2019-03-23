@@ -2,7 +2,7 @@
     "netease": {
         "key": "netease",
         "name": "网易新闻",
-        "site": "https://news.163.com/",
+        "index": "https://news.163.com/",
         "subSite": [],
         "htmlClass": {
             "header": ".channel-all ul",
@@ -15,7 +15,7 @@
     "sina": {
         "key": "sina",
         "name": "新浪新闻",
-        "site": "https://news.sina.com.cn/",
+        "index": "https://news.sina.com.cn/",
         "subSite": [],
         "htmlClass": {
             "header": ".cNavLinks",
@@ -28,7 +28,7 @@
     "tencent": {
         "key": "tencent",
         "name": "腾讯新闻",
-        "site": "https://news.qq.com/",
+        "index": "https://news.qq.com/",
         "subSite": [],
         "htmlClass": {
             "header": ".main-list.fl > ul",
@@ -41,7 +41,7 @@
     "people": {
         "key": "people",
         "name": "人民网",
-        "site": "http://www.people.com.cn/",
+        "index": "http://www.people.com.cn/",
         "subSite": {
             "滚动": "http://news.people.com.cn/",
             "时政": "http://politics.people.com.cn/",
@@ -98,6 +98,8 @@
             "汽车": "http://auto.people.com.cn/",
             "健康": "http://health.people.com.cn/",
             "科技": "http://scitech.people.com.cn/"
-        }
+        },
+        "pageLinks": {},
+        "articles": {}
     }
 }
