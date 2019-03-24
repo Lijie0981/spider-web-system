@@ -11,7 +11,7 @@ class People extends Spider {
     }
     async parseHead() {
         let { $ } = await this.getPageContent(this.site.index);
-        let $headers = $(SITE_CONF.people.htmlClass.header).children();
+        let $headers = $(SITE_CONF[this.site.key].htmlClass.header).children();
         let subLinks = {};
         for (let $key in $headers) {
             if (+$key >= 0 && $headers[$key].tagName === "span") {
@@ -96,7 +96,7 @@ class People extends Spider {
                 content,
                 url: pageLink,
                 time: this.parseTime(info),
-                site: '人民网',
+                site: this.site.name,
                 column
             };
             this.log(article);
@@ -127,9 +127,9 @@ class People extends Spider {
         this.runFlag = false;
     }
 }
-let people = new People(SITE_CONF.people);
-people.init();
-people.handleAllLinks();
+// let people = new People(SITE_CONF.people);
+// people.init();
+// people.handleAllLinks();
 // people.parseTime('2019年03月22日17:39  来源：人民网-俄罗斯频道');
 // people.parseArticle('http://world.people.com.cn/n1/2019/0322/c1002-30990118.html');
 module.exports = { People, people };

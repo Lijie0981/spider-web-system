@@ -12,11 +12,11 @@ class Spider {
         this.site = site;
         this.log = debug(`spider:${this.site.name}`);
     }
-    async getPageContent(url) {
+    async getPageContent(url, charset = 'gbk') {
         let res = {};
         try {
             res = await request.get(url)
-                    .charset('gbk'); 
+                    .charset(charset); 
         } catch (error) {
             return {};
         }
@@ -54,7 +54,7 @@ class Spider {
     run () {}
     pause () {}
     init () {
-        Article.remove({}, function(err) {
+        Article.remove({site: this.site.name}, function(err) {
             if (err) {
                 console.log ('error deleting old data.');
             }
