@@ -2,12 +2,12 @@ const cheerio = require('cheerio');
 const debug = require('debug');
 const request = require('request');
 const iconv = require('iconv-lite');
-// require('superagent-charset')(request);
 const siteConfPath = '../config/site.json';
 const SITE_CONF = require('../config/site.js');
 const fs = require('fs');
 const path = require('path');
 const Article = require('./models/Article');
+const moment = require('moment');
 const Url = require('url-parse');
 class Spider {
     constructor(site) {
@@ -15,6 +15,9 @@ class Spider {
         this.log = debug(`spider:${this.site.name}`);
         this.site.pageLinks = new Set();
         this.site.articles = new Map();
+        this.fetchTimes = 0;
+        this.errorNum = 0;
+        this.parseTimes = 0;
         this.runFlag = true;
     }
     async parseHead() {
@@ -37,11 +40,15 @@ class Spider {
                 request({ uri: url, encoding: null }, (err, response, body) => {
                     if (err) {
                         rej(err);
+                        this.handleError(err, `请求${url}失败`);
                     }
                     else {
                         let charset = "utf-8";
                         let arr = body.toString().match(/<meta([^>]*?)>/g);
-                        if (arr) {
+                        if (response.headers['content-type'].match(/GB/i)) {
+                            charset = 'gbk';
+                        }
+                        if (arr && charset !== 'gbk') {
                             arr.forEach(function (val) {
                                 let match = val.match(/charset\s*=\s*(.+)\"/);
                                 if (match && match[1]) {
@@ -51,7 +58,7 @@ class Spider {
                                 }
                             })
                         }
-                        this.log('page charset', charset);
+                        this.log('page charset',charset);
                         let resData = {
                             body: iconv.decode(body, charset),
                             response
@@ -87,7 +94,6 @@ class Spider {
         SITE_CONF[this.site.key].subLinks = subLinks;
         fs.writeFileSync(path.resolve(__dirname, siteConfPath), JSON.stringify(SITE_CONF));
         this.log(SITE_CONF[this.site.key].subLinks);
-        // TODO write into database
     }
     setArticle(article) {
         // TODO write into database
@@ -96,6 +102,16 @@ class Spider {
         article.save(function (err) {
             if (err) return that.handleError(err);
             that.handleArticleSave()
+        });
+    }
+    async getArticle(query) {
+        return await new Promise((res, rej)=>{
+            Article.find({ site: this.site.name }, function (err, results) {
+                if (err) {
+                    this.handleError(err, `查询${this.site.name}数据错误`);
+                }
+                res(results);
+            });
         });
     }
     async handleAllLinks() {
@@ -114,8 +130,9 @@ class Spider {
             this.log('dispatch all sub sites success');
         })
     }
-    handleError(err) {
-        this.log(err)
+    handleError(err, msg) {
+        this.errorNum++;
+        this.log(err, msg);
     }
     handleArticleSave() {
         this.log('article saved');
@@ -128,38 +145,50 @@ class Spider {
         return +moment(`${year}-${month}-${day} ${hour}:${minute}`);
     }
     async run() {
+        this.log(`${this.startTime}：${this.site.name}新闻爬虫已开始任务。`);
+        this.startTime = moment().format('YYYY-MM-DD HH:mm:ss');
         this.init();
         await this.parseHead();
-        let times = 0;
         setInterval(async () => {
             if (this.runFlag) {
                 await this.handleAllLinks();
-                times++;
-                this.log(`第${times}抓取`);
+                this.fetchTimes++;
+                this.log(`第${this.fetchTimes}抓取\t${moment().format('YYYY-MM-DD HH:mm:ss')}`);
             }
         }, 60 * 1000);
     }
     pause() {
         this.runFlag = false;
+        this.parseTimes++;
+        this.pauseTime = moment().format('YYYY-MM-DD HH:mm:ss');
+        this.log(`${this.site.name}新闻爬虫已暂停。${this.startTime}开始${this.parseTime}停止。\n请求次数${this.fetchTimes}`);
     }
     restart() {
+        this.startTime = moment().format('YYYY-MM-DD HH:mm:ss');
         this.runFlag = true;
+        this.log(`${this.startTime}：${this.site.name}新闻爬虫已重新开始任务。`);
     }
     init() {
         Article.remove({ site: this.site.name }, function (err) {
             if (err) {
-                console.log('error deleting old data.');
+                this.handleError(err, `初始化${this.site.name}数据错误`);
             }
         });
     }
+    async info() {
+        let toDayArticles = await this.getArticle({ site: this.site.key, time: { $gte: +moment(moment().format('YYYY-MM-DD 00:00:00')), $lte: +moment(moment().format('YYYY-MM-DD 23:59:59')) } });
+        return {
+            fetchTimes: this.fetchTimes,
+            errorNum: this.errorNum,
+            allArticlesNum: Object.keys(this.site.articles).length,
+            toDayArticlesNum: toDayArticles.length,
+            subLinks: this.site.subLinks,
+            startTime: this.startTime,
+            pauseTimes: this.parseTimes
+        }
+    }
 }
+
 module.exports = { Spider };
-// let site = {
-//     site: 'http://www.people.com.cn/',
-//     name: '人民网'
-// };
-// let spider = new Spider(site);
-// spider.setArticle();
-// Article.find({}).exec(function (err, result) {
-//     debug(err);
-// });
+// TODO
+// 1. 获取所有链接要做去重处理。

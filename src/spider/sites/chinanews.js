@@ -52,7 +52,4 @@ class Chinanews extends Spider {
     }
 }
 let chinanews = new Chinanews(SITE_CONF.chinanews);
-chinanews.init();
-chinanews.parseHead();
-chinanews.handleAllLinks();
 module.exports = { Chinanews, chinanews };

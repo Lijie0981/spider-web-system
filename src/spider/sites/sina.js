@@ -62,7 +62,7 @@ class Sina extends Spider {
     }
 }
 let sina = new Sina(SITE_CONF.sina);
-sina.init();
-sina.parseHead();
-sina.handleAllLinks();
+// sina.init();
+// sina.parseHead();
+// sina.handleAllLinks();
 module.exports = { Sina, sina };
