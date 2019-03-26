@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>及时雨-一个更快更全的新闻嗅探器</title>
+</head>
+<style>
+    /* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+    html,
+    body,
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+
+    /* HTML5 display-role reset for older browsers */
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    section {
+        display: block;
+    }
+
+    body {
+        line-height: 1;
+    }
+
+    ol,
+    ul {
+        list-style: none;
+    }
+
+    blockquote,
+    q {
+        quotes: none;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+        -webkit-tap-highlight-color: rgba(0,0,0,0)!important;
+    }
+
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
+        content: '';
+        content: none;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .line-clamp2,
+    .line-clamp3,
+    .line-clamp4,
+    .line-clamp5 {
+        display: -webkit-box;
+        overflow: hidden;
+        margin-bottom: 5px;
+        white-space: normal;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+    }
+
+    .line-clamp1 {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .line-clamp2 {
+        -webkit-line-clamp: 2;
+    }
+
+    .line-clamp3 {
+        -webkit-line-clamp: 3;
+    }
+
+    .line-clamp4 {
+        -webkit-line-clamp: 4;
+    }
+
+    .line-clamp5 {
+        -webkit-line-clamp: 5;
+    }
+
+    .header {
+        height: 6vh;
+        text-align: center;
+        line-height: 6vh;
+        border-bottom: 1px solid #eee;
+        box-shadow: 0px 0px 60px rgba(0, 0, 0, .05);
+    }
+
+    .content {
+        height: 88vh;
+        background: #f1f1f1;
+        overflow: scroll;
+    }
+
+    .bottom-bar {
+        height: 6vh;
+        line-height: 6vh;
+    }
+
+    nav,
+    .bar-list {
+        height: 100%;
+    }
+
+    .bar-list {
+        display: flex;
+        flex-flow: row;
+        border-top: 1px solid #eeee;
+        position: relative;
+        top: -1px;
+    }
+
+    .bar-list-item {
+        display: inline-block;
+        flex: 1;
+        text-align: center;
+    }
+
+    .bar-list-item:active {
+        background: #eee;
+    }
+
+    .news-list-item {
+        padding: 2vh 4vw;
+        background: #fff;
+        margin-bottom: 8px;
+    }
+
+    .news-list-item:active {
+        background: rgba(0, 0, 0, .05);
+    }
+
+    .news-list-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .news-title {
+        font: 19px/29px Arial, Helvetica, sans-serif;
+        color: #000;
+    }
+
+    .news-info {
+        font: 14px/24px Arial, Helvetica, sans-serif;
+        color: #555;
+        margin: 5px 0;
+    }
+
+    .news-abstract {
+        font: 14px/24px Arial, Helvetica, sans-serif;
+        color: #555;
+    }
+
+    .news-url {
+        font: 14px/24px Arial, Helvetica, sans-serif;
+        color: #999;
+    }
+</style>
+
+<body>
+    <header class="header">及时雨</header>
+    <div class="content">
+        <ul class="news-list">
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+            <li class="news-list-item">
+                <a href="http://www.baidu.com">
+                    <h2 class="news-title line-clamp1">
+                        4月新规：多行业迎减税“红包” 中小学要建立陪餐制
+                    </h2>
+                    <p class="news-info line-clamp1">
+                        2019年03月25日 07:13　来源：人民网
+                    </p>
+                    <p class="news-abstract line-clamp3">
+                        "中新网3月25日电
+                        据日媒报道，25日，韩国大田地方法院做出决定，批准了强征劳工案中，韩国原告的代理人提出的扣押日本企业三菱重工业公司资产申请。　　韩国最高法院去年11月裁决，日本企业三菱重工第二次世界大战期间强行征用12名韩国劳工，应赔偿每名劳工或家属最高1.2亿韩元(约合71.0万元人民币)。　　被告三菱重工拒绝参与执行赔偿裁决相关的磋商，原告决定申请扣押这家企业在韩国的部分资产。　　对此类韩国劳工状告日企索赔案，日本政府辩解，韩国人的个人索赔权问题已通过1965年缔结的《日韩请求权协定》得到最终解决。　　针对原告方的举动，日本官房长官菅义伟曾表示担忧，称“这是极其严重的状况”。日方表示，如果企业方面蒙受实际损失，则会采取对抗措施。"
+                    </p>
+                    <p class="news-url line-clamp1">
+                        http://www.chinanews.com/gj/2019/03-25/8789554.shtml
+                    </p>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="bottom-bar">
+        <nav>
+            <ul class="bar-list">
+                <li class="bar-list-item"><a href="">首页</a></li>
+                <li class="bar-list-item"><a href="">最新</a></li>
+                <li class="bar-list-item"><a href="">订阅</a></li>
+                <li class="bar-list-item"><a href="">我的</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</body>
+
+</html>

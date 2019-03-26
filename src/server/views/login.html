@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>及时雨-一个更快更全的新闻嗅探器</title>
+    <script src="public/js/jquery.min.js"></script>
+</head>
+<style>
+    /* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+    html,
+    body,
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+
+    /* HTML5 display-role reset for older browsers */
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    section {
+        display: block;
+    }
+
+    body {
+        line-height: 1;
+    }
+
+    ol,
+    ul {
+        list-style: none;
+    }
+
+    blockquote,
+    q {
+        quotes: none;
+    }
+
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
+        content: '';
+        content: none;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-image: url('public/img/sign_bg.db29b0fb.png');
+    }
+
+    button {
+        display: inline-block;
+        padding: 0 16px;
+        font-size: 14px;
+        line-height: 32px;
+        color: #8590a6;
+        text-align: center;
+        cursor: pointer;
+        background: none;
+        border: 1px solid;
+        border-radius: 3px;
+    }
+
+    .login-box {
+        width: 432px;
+        margin: 0 auto;
+        text-align: center;
+        background-color: white;
+    }
+
+    .box-header {
+        padding: 30px 40px 10px;
+        color: #0084ff;
+    }
+
+    .box-header header {
+        font-size: 24px;
+        line-height: 34px;
+    }
+
+    .box-header p {
+        font-size: 16px;
+        line-height: 26px;
+    }
+
+    .box-form {
+        padding: 0 40px 36px;
+        font-size: 14px;
+    }
+
+    .form-input-wrap {
+        position: relative;
+        display: flex;
+        font-size: 14px;
+        background: #fff;
+        box-sizing: border-box;
+        transition: background .2s, border .2s;
+        width: 100%;
+        height: 48px;
+        padding: 0;
+        color: #8590a6;
+        border: none;
+        border-bottom: 1px solid #ebebeb;
+        border-radius: 0;
+    }
+
+    .form-input {
+        flex: 1 1;
+        padding: 0;
+        overflow: hidden;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        background: transparent;
+        border: none;
+        resize: none;
+        height: 48px;
+    }
+
+    .form-button {
+        width: 100%;
+        margin-top: 30px;
+        height: 36px;
+        color: #fff;
+        background-color: #0084ff;
+    }
+
+    .form-input:focus,
+    .form-button:focus {
+        outline: none;
+    }
+
+    .box-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: #f6f6f6;
+        height: 58px;
+        border-top: 1px solid #ebebeb;
+        font-size: 16px;
+    }
+
+    .box-bottom .c-color-blue {
+        color: #175199;
+        cursor: pointer;
+    }
+
+    .login-form {}
+
+    .register-form,
+    .bottom-login {
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="login-box">
+        <div class="box-header">
+            <header>
+                及时雨
+            </header>
+            <p>一个更快更全的新闻嗅探器</p>
+        </div>
+        <div class="box-form">
+            <form action="" class="register-form">
+                <div class="form-input-wrap">
+                    <input type="text" name="account" id="register-account" class="form-input register-account" placeholder="账号">
+
+                </div>
+                <div class="form-input-wrap">
+                    <input type="password" name="password" id="register-password" class="form-input register-password" placeholder="密码">
+
+                </div>
+                <div class="form-input-wrap">
+                    <input type="password" name="repeat-password" id="register-repeat-password" class="form-input register-repeat-password"
+                        placeholder="确认密码">
+
+                </div>
+                <button type="submit" class="form-button">注册</button>
+            </form>
+            <form action="" class="login-form">
+                <div class="form-input-wrap">
+                    <input type="text" name="account" id="login-account" class="form-input login-account" placeholder="账号">
+
+                </div>
+                <div class="form-input-wrap">
+                    <input type="password" name="password" id="login-password" class="form-input login-password" placeholder="密码">
+                </div>
+                <button type="submit" class="form-button">登录</button>
+
+            </form>
+        </div>
+        <div class="box-bottom">
+            <div class="bottom-register">
+                没有帐号？<span class="c-color-blue">注册</span>
+            </div>
+            <div class="bottom-login">
+                已有账号？<span class="c-color-blue">登录</span>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var $bottomLogin = $('.bottom-login');
+    var $bottomRegister = $('.bottom-register');
+    var $loginForm = $('.login-form');
+    var $registerForm = $('.register-form');
+    var $loginFormButton = $('.login-form .form-button');
+    var $registerFormButton = $('.register-form .form-button');
+    var $loginAccount = $('.login-account');
+    var $loginPassword = $('.login-password');
+    var $regiterAccount = $('.regiter-account');
+    var $registerPassword = $('.register-password');
+    var $registerRepeatPassword = $('.register-repeat-password');
+
+    $bottomRegister.click(function (e) {
+        $registerForm.show();
+        $loginForm.hide();
+        $bottomRegister.hide();
+        $bottomLogin.show();
+    });
+    $bottomLogin.click(function (e) {
+        $loginForm.show();
+        $registerForm.hide();
+        $bottomRegister.show();
+        $bottomLogin.hide();
+    });
+    
+</script>
+
+</html>
