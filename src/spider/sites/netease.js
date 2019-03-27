@@ -11,7 +11,7 @@ class Netease extends Spider {
         let linkReg = new RegExp(/\/?(\d{2})\/(\d{4})\/\d{2}\/.*.html?/);
         $a.each(async (index, element) => {
             let href = cheerio(element).attr('href');
-            if (href && !this.site.pageLinks.has(href)) {
+            if (href) {
                 if (linkReg.exec(href)) {
                     this.log(href);
                     let year = +linkReg.exec(href)[1];
@@ -20,7 +20,7 @@ class Netease extends Spider {
                     let date = +linkReg.exec(href)[2];
                     if (year === nowYear && nowDate === date) {
                         href = href[0] === '/' ? res.request.url + href.substring(1) : href;
-                        if (!!!href.match(/tv|v./)) {
+                        if (!!!href.match(/tv|v./)  && !this.site.pageLinks.has(href)) {
                             this.site.pageLinks.add(href);
                             let article = await this.parseArticle(href, column);
                             article && this.site.articles.set(href, article);

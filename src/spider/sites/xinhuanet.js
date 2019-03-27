@@ -11,7 +11,7 @@ class Xinhuanet extends Spider {
         let $a = $('a');
         $a.each(async (index, element) => {
             let href = cheerio(element).attr('href');
-            if (href && !this.site.pageLinks.has(href)) {
+            if (href) {
                 if (linkReg.exec(href)) {
                     this.log(href);
                     let year = +linkReg.exec(href)[1];
@@ -21,9 +21,11 @@ class Xinhuanet extends Spider {
                     this.log(year, nowYear, date, nowDate);
                     if (year === nowYear && nowDate === date) {
                         href = href[0] === '/' ? res.request.url + href.substring(1) : href;
-                        this.site.pageLinks.add(href);
-                        let article = await this.parseArticle(href, column);
-                        article && this.site.articles.set(href, article);
+                        if (!this.site.pageLinks.has(href)) {
+                            this.site.pageLinks.add(href);
+                            let article = await this.parseArticle(href, column);
+                            article && this.site.articles.set(href, article);
+                        }
                     }
                 }
             }

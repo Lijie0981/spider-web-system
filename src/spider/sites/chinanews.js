@@ -11,20 +11,22 @@ class Chinanews extends Spider {
         let linkReg = new RegExp(/\/?(\d{4})\/(\d{2}-\d{2})\/.*.s?html?/);
         $a.each(async (index, element) => {
             let href = cheerio(element).attr('href');
-            if (href && !this.site.pageLinks.has(href)) {
+            if (href) {
                 if (linkReg.exec(href)) {
-                    this.log(href);
                     let year = +linkReg.exec(href)[1];
                     let nowYear = +moment().format('YYYY');
                     let nowDate = moment().format('MM-DD');
                     let date = linkReg.exec(href)[2];
-                    this.log(year, nowYear, date, nowDate);
                     if (year === nowYear && nowDate === date) {
-                        href = href[0] === '/' && !href.match(/\/\//) ? res.request.url + href.substring(1) : href;
+                        href = href[0] === '/' && !href.match(/^\/\//) ? res.request.url + href.substring(1) : href;
+                        href = href.match(/^\/\//) ? res.request.protocol + href : href;
                         if (href.indexOf('shipin') !== -1 || href.indexOf(this.site.key) == -1) { return; }
-                        this.site.pageLinks.add(href);
-                        let article = await this.parseArticle(href, column);
-                        article && this.site.articles.set(href, article);
+                        if (!this.site.pageLinks.has(href)) {
+                            this.log(href);
+                            this.site.pageLinks.add(href);
+                            let article = await this.parseArticle(href, column);
+                            article && this.site.articles.set(href, article);
+                        }
                     }
                 }
             }
