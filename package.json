@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha test ./test --recursive",
     "spider": "@powershell -Command $env:DEBUG='*'; node ./src/spider/Task.js",
-    "server": "@powershell -Command $env:DEBUG='*'; node ./src/server/app.js"
+    "server": "@powershell -Command $env:DEBUG='*'; nodemon ./src/server/app.js"
   },
   "repository": {
     "type": "git",

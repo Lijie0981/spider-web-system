@@ -8,7 +8,7 @@ const AdminSchema = new Schema({
 });
 
 const Admin = mongoose.model('Admin', AdminSchema);
-let admin = new User({
+let admin = new Admin({
     account: '123',
     password: '123',
     createTime: +new Date()
