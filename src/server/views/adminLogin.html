@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>及时雨-一个更快更全的新闻嗅探器</title>
+    <script src="public/js/jquery.min.js"></script>
+</head>
+<style>
+    /* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+    html,
+    body,
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+
+    /* HTML5 display-role reset for older browsers */
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    section {
+        display: block;
+    }
+
+    body {
+        line-height: 1;
+    }
+
+    ol,
+    ul {
+        list-style: none;
+    }
+
+    blockquote,
+    q {
+        quotes: none;
+    }
+
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
+        content: '';
+        content: none;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-image: url('public/img/sign_bg.db29b0fb.png');
+    }
+
+    button {
+        display: inline-block;
+        padding: 0 16px;
+        font-size: 14px;
+        line-height: 32px;
+        color: #8590a6;
+        text-align: center;
+        cursor: pointer;
+        background: none;
+        border: 1px solid;
+        border-radius: 3px;
+    }
+
+    .login-box {
+        width: 432px;
+        margin: 0 auto;
+        text-align: center;
+        background-color: white;
+    }
+
+    .box-header {
+        padding: 30px 40px 10px;
+        color: #0084ff;
+    }
+
+    .box-header header {
+        font-size: 24px;
+        line-height: 34px;
+    }
+
+    .box-header p {
+        font-size: 16px;
+        line-height: 26px;
+    }
+
+    .box-form {
+        padding: 0 40px 36px;
+        font-size: 14px;
+    }
+
+    .form-input-wrap {
+        position: relative;
+        display: flex;
+        font-size: 14px;
+        background: #fff;
+        box-sizing: border-box;
+        transition: background .2s, border .2s;
+        width: 100%;
+        height: 48px;
+        padding: 0;
+        color: #8590a6;
+        border: none;
+        border-bottom: 1px solid #ebebeb;
+        border-radius: 0;
+    }
+
+    .form-input {
+        flex: 1 1;
+        padding: 0;
+        overflow: hidden;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        background: transparent;
+        border: none;
+        resize: none;
+        height: 48px;
+    }
+
+    .form-button {
+        width: 100%;
+        margin-top: 30px;
+        height: 36px;
+        color: #fff;
+        background-color: #0084ff;
+    }
+
+    .form-input:focus,
+    .form-button:focus {
+        outline: none;
+    }
+
+    .box-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: #f6f6f6;
+        height: 58px;
+        border-top: 1px solid #ebebeb;
+        font-size: 16px;
+    }
+
+    .box-bottom .c-color-blue {
+        color: #175199;
+        cursor: pointer;
+    }
+
+    .box-form-info {
+        color: red;
+        margin-top: 15px;
+        text-align: left;
+        display: none;
+    }
+
+    .login-form {}
+
+    .register-form,
+    .bottom-login {
+        display: none;
+    }
+</style>
+
+<body>
+    <div class="login-box">
+        <div class="box-header">
+            <header>
+                及时雨
+            </header>
+            <p>一个更快更全的新闻嗅探器</p>
+        </div>
+        <div class="box-form">
+            <form class="login-form">
+                <div class="form-input-wrap">
+                    <input type="text" name="account" id="login-account" class="form-input login-account"
+                        placeholder="用户名">
+
+                </div>
+                <div class="form-input-wrap">
+                    <input type="password" name="password" id="login-password" class="form-input login-password"
+                        placeholder="密码">
+                </div>
+                <div class="box-form-info">
+                </div>
+                <button type="button" class="form-button">登录</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    function readXPath(element) {
+        if (element.id !== "") {//判断id属性，如果这个元素有id，则显 示//*[@id="xPath"]  形式内容
+            return '//*[@id=\"' + element.id + '\"]';
+        }
+
+        if (element.getAttribute("class") !== null) { //判断class属性，如果这个元素有class，则显 示//*[@class="xPath"]  形式内容
+            return '//*[@class=\"' + element.getAttribute("class") + '\"]';
+        }
+        if (element == document.body) {//递归到body处，结束递归
+            return '/html/' + element.tagName;
+        }
+        var ix = 0,//在nodelist中的位置，且每次点击初始化
+            siblings = element.parentNode.childNodes;//同级的子元素
+
+        for (var i = 0, l = siblings.length; i < l; i++) {
+            var sibling = siblings[i];
+            if (sibling == element) {//如果这个元素是siblings数组中的元素，则执行递归操作
+                return arguments.callee(element.parentNode) + '/' + element.tagName + ((ix + 1) == 1 ? '' : '[' + (ix + 1) + ']');//ix+1是因为xpath是从1开始计数的，element.tagName+((ix+1)==1?'':'['+(ix+1)+']')三元运算符，如果是第一个则不显示，从2开始显示
+            } else if (sibling.nodeType == 1 && sibling.tagName == element.tagName) {//如果不符合，判断是否是element元素，并且是否是相同元素，如果是相同的就开始累加
+                ix++;
+            }
+        }
+    };
+    var $loginForm = $('.login-form');
+    var $lognFormInput = $('.login-form input');
+    var $loginAccount = $('.login-account');
+    var $loginPassword = $('.login-password');
+    var $loginBoxFormInfo = $('.login-form .box-form-info');
+    var $loginFormButton = $('.login-form .form-button');
+
+    $lognFormInput.on('focus', function () {
+        $loginBoxFormInfo.hide();
+    });
+    $loginFormButton.click(function (e) {
+        let account = $loginAccount.val();
+        let password = $loginPassword.val();
+        if (account && password) {
+            $.ajax({
+                type: 'POST',
+                url: '/login/admin',
+                data: {
+                    account,
+                    password
+                },
+                success: function (data) {
+                    switch (data.loginType) {
+                        case 'success':
+                            location.href = '/admin';
+                            break;
+                        default:
+                            $loginBoxFormInfo.text(data.msg).show();
+                            break;
+                    }
+                }
+            });
+            return;
+        }
+        if (!account || !password) {
+            // $loginAccount.addClass('input-error');
+            $loginBoxFormInfo.text('请输入账号或密码').show();
+        }
+    });
+
+    $('.log-trigger').on('click',function(e){
+        var xpath = readXPath(e);
+        var log = {
+            xpath:xpath,
+            type:'click',
+            time: +new Date()
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/log',
+            data: log
+        });
+    });
+</script>
+
+</html>
