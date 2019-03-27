@@ -1,12 +1,281 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>我的 | 及时雨-一个更快更全的新闻嗅探器</title>
-</head>
-<body>
+<% extends "layout.html" %>
+<%block header%>
+订阅-及时雨
+<%endblock%>
+<% block content %>
+<style>
+    .news-column-list {
+        padding: 15px 0 0;
+    }
+
+    .news-column-item {
+        float: left;
+        margin: 0 20px 15px 0;
+        list-style: none;
+    }
+
+    .news-column-name.current {
+        background: #259;
+        border-color: #259;
+        color: #fff;
+    }
+
+    .news-column-name {
+        display: block;
+        padding: 10px 20px;
+        border-radius: 30px;
+        text-decoration: none;
+        border: 1px solid #daecf5;
+        -webkit-tap-highlight-color: rgba(225, 225, 225, .5);
+    }
+
+    .content {
+        /* overflow: hidden; */
+    }
+
+    .news-list {
+        /* height: calc(74vh - 8px); */
+        /* overflow: scroll; */
+    }
+
+    .home-top {
+        background: white;
+        padding: 2vh 4vw;
+        margin-bottom: 8px;
+    }
+
+    .home-subtitle {
+        padding: 0 4vw;
+        border-bottom: 1px solid #eee;
+        overflow: hidden;
+        height: 5vh;
+        background: white;
+        line-height: 5vh;
+    }
+
+    .avatar-wrap {
+        display: flex;
+        align-self: center;
+        justify-content: flex-start;
+    }
+
+    .avatar {
+        width: 5vh;
+        height: 5vh;
+        border-radius: 50%;
+        border: 2px solid #fff;
+    }
+
+    .account-wrap {
+        display: flex;
+        flex-flow: column;
+        justify-content: space-around;
+    }
+
+    .account {
+        /* margin-bottom: 5px;  */
+    }
+    .home-info-change {
+        display: none;
+    }
+    .home-info button {
+        border-radius: 8px; 
+    }
+    .change-form {
+        margin-top: 10px;
+    }
+    .form-input-wrap {
+        position: relative;
+        display: flex;
+        font-size: 14px;
+        background: #fff;
+        box-sizing: border-box;
+        transition: background .2s, border .2s;
+        width: 100%;
+        height: 48px;
+        padding: 0;
+        color: #8590a6;
+        border: none;
+        border-bottom: 1px solid #ebebeb;
+        border-radius: 0;
+    }
+
+    .form-input {
+        flex: 1 1;
+        padding: 0;
+        overflow: hidden;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
+        background: transparent;
+        border: none;
+        resize: none;
+        height: 48px;
+    }
+
+    .form-button {
+        width: 100%;
+        margin-top: 30px;
+        height: 36px;
+        color: #fff;
+        background-color: #0084ff;
+    }
+
+    .form-input:focus,
+    .form-button:focus {
+        outline: none;
+    }
+
+    .box-bottom {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        background-color: #f6f6f6;
+        height: 58px;
+        border-top: 1px solid #ebebeb;
+        font-size: 16px;
+    }
+
+    .box-bottom .c-color-blue {
+        color: #175199;
+        cursor: pointer;
+    }
+</style>
+<div class="home-top">
+    <div class="home-info row">
+        <div class="c-span1 avatat-wrap">
+            <img src="https://pic3.zhimg.com/v2-a8e47c73bdfec24dbfeef5ec43edd012_xl.jpg" class="avatar" alt="">
+        </div>
+        <div class="c-span8 account-wrap">
+            <h2 class="account">lijie</h2>
+            <p class="account">wode</p>
+        </div>
+        <div class="c-span1">
+            <button class="form-button c-gap-top-zero change-info-button">
+                修改
+            </button>
+        </div>
+    </div> 
+    <div class="home-info-change">
+            <form action="" class="change-form">
+                    <div class="form-input-wrap">
+                        <input type="password" name="password" id="register-password" class="form-input register-password" placeholder="密码">
     
-</body>
-</html>
+                    </div>
+                    <div class="form-input-wrap">
+                        <input type="password" name="repeat-password" id="register-repeat-password" class="form-input register-repeat-password"
+                            placeholder="确认密码">
+    
+                    </div>
+                    <button type="submit" class="form-button change-info-submit">提交</button>
+                </form>
+    </div>
+</div>
+<div class="home-subtitle">
+    订阅
+</div>
+<ul class="news-list">
+    <li class="news-list-item">
+        <h2 class="news-title">人民网</h2>
+        <ul class="news-column-list clearfix">
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+        </ul>
+    </li>
+    <li class="news-list-item">
+        <h2 class="news-title">人民网</h2>
+        <ul class="news-column-list clearfix">
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+        </ul>
+    </li>
+    <li class="news-list-item">
+        <h2 class="news-title">人民网</h2>
+        <ul class="news-column-list clearfix">
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+        </ul>
+    </li>
+    <li class="news-list-item">
+        <h2 class="news-title">人民网</h2>
+        <ul class="news-column-list clearfix">
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+        </ul>
+    </li>
+    <li class="news-list-item">
+        <h2 class="news-title">人民网</h2>
+        <ul class="news-column-list clearfix">
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+        </ul>
+    </li>
+    <li class="news-list-item">
+        <h2 class="news-title">人民网</h2>
+        <ul class="news-column-list clearfix">
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+        </ul>
+    </li>
+    <li class="news-list-item">
+        <h2 class="news-title">人民网</h2>
+        <ul class="news-column-list clearfix">
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+        </ul>
+    </li>
+    <li class="news-list-item">
+        <h2 class="news-title">人民网</h2>
+        <ul class="news-column-list clearfix">
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+        </ul>
+    </li>
+    <li class="news-list-item">
+        <h2 class="news-title">人民网</h2>
+        <ul class="news-column-list clearfix">
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+        </ul>
+    </li>
+</ul>
+<script>
+    var $changeButton = $('.change-info-button');
+    var $newsColumeName = $('.news-column-name');
+    var $changeSubmitBtn = $('.change-info-submit');
+    var $homeInfoChange = $('.home-info-change');
+
+    $changeButton.click(function(){
+        $homeInfoChange.show();
+        $changeButton.hide();
+    });
+    $newsColumeName.click(function(e){
+        var $target = $(e.target);
+        let addClass = 'current';
+        if ($target.hasClass(addClass)) {
+            $target.removeClass(addClass);
+        } else {
+            $target.addClass(addClass);
+        }
+    });
+</script>
+<% endblock %>

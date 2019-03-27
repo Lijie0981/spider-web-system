@@ -95,6 +95,8 @@
     mark,
     audio,
     video {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         margin: 0;
         padding: 0;
         border: 0;
@@ -257,6 +259,13 @@
         cursor: pointer;
     }
 
+    .box-form-info {
+        color: red;
+        margin-top: 15px;
+        text-align: left;
+        display: none;
+    }
+
     .login-form {}
 
     .register-form,
@@ -274,32 +283,39 @@
             <p>一个更快更全的新闻嗅探器</p>
         </div>
         <div class="box-form">
-            <form action="" class="register-form">
+            <form class="register-form">
                 <div class="form-input-wrap">
-                    <input type="text" name="account" id="register-account" class="form-input register-account" placeholder="账号">
+                    <input type="text" name="account" id="register-account" class="form-input register-account"
+                        placeholder="账号">
 
                 </div>
                 <div class="form-input-wrap">
-                    <input type="password" name="password" id="register-password" class="form-input register-password" placeholder="密码">
+                    <input type="password" name="password" id="register-password" class="form-input register-password"
+                        placeholder="密码">
 
                 </div>
                 <div class="form-input-wrap">
-                    <input type="password" name="repeat-password" id="register-repeat-password" class="form-input register-repeat-password"
-                        placeholder="确认密码">
+                    <input type="password" name="repeat-password" id="register-repeat-password"
+                        class="form-input register-repeat-password" placeholder="确认密码">
 
                 </div>
-                <button type="submit" class="form-button">注册</button>
+                <div class="box-form-info">
+                </div>
+                <button type="button" class="form-button">注册</button>
             </form>
-            <form action="" class="login-form">
+            <form class="login-form">
                 <div class="form-input-wrap">
-                    <input type="text" name="account" id="login-account" class="form-input login-account" placeholder="账号">
+                    <input type="text" name="account" id="login-account" class="form-input login-account"
+                        placeholder="用户名">
 
                 </div>
                 <div class="form-input-wrap">
-                    <input type="password" name="password" id="login-password" class="form-input login-password" placeholder="密码">
+                    <input type="password" name="password" id="login-password" class="form-input login-password"
+                        placeholder="密码">
                 </div>
-                <button type="submit" class="form-button">登录</button>
-
+                <div class="box-form-info">
+                </div>
+                <button type="button" class="form-button">登录</button>
             </form>
         </div>
         <div class="box-bottom">
@@ -313,17 +329,85 @@
     </div>
 </body>
 <script>
+    function readXPath(element) {
+        if (element.id !== "") {//判断id属性，如果这个元素有id，则显 示//*[@id="xPath"]  形式内容
+            return '//*[@id=\"' + element.id + '\"]';
+        }
+
+        if (element.getAttribute("class") !== null) { //判断class属性，如果这个元素有class，则显 示//*[@class="xPath"]  形式内容
+            return '//*[@class=\"' + element.getAttribute("class") + '\"]';
+        }
+        if (element == document.body) {//递归到body处，结束递归
+            return '/html/' + element.tagName;
+        }
+        var ix = 0,//在nodelist中的位置，且每次点击初始化
+            siblings = element.parentNode.childNodes;//同级的子元素
+
+        for (var i = 0, l = siblings.length; i < l; i++) {
+            var sibling = siblings[i];
+            if (sibling == element) {//如果这个元素是siblings数组中的元素，则执行递归操作
+                return arguments.callee(element.parentNode) + '/' + element.tagName + ((ix + 1) == 1 ? '' : '[' + (ix + 1) + ']');//ix+1是因为xpath是从1开始计数的，element.tagName+((ix+1)==1?'':'['+(ix+1)+']')三元运算符，如果是第一个则不显示，从2开始显示
+            } else if (sibling.nodeType == 1 && sibling.tagName == element.tagName) {//如果不符合，判断是否是element元素，并且是否是相同元素，如果是相同的就开始累加
+                ix++;
+            }
+        }
+    };
     var $bottomLogin = $('.bottom-login');
-    var $bottomRegister = $('.bottom-register');
     var $loginForm = $('.login-form');
-    var $registerForm = $('.register-form');
-    var $loginFormButton = $('.login-form .form-button');
-    var $registerFormButton = $('.register-form .form-button');
+    var $lognFormInput = $('.login-form input');
     var $loginAccount = $('.login-account');
     var $loginPassword = $('.login-password');
-    var $regiterAccount = $('.regiter-account');
+    var $loginBoxFormInfo = $('.login-form .box-form-info');
+    var $loginFormButton = $('.login-form .form-button');
+
+    var $bottomRegister = $('.bottom-register');
+    var $registerForm = $('.register-form');
+    var $registerFormInput = $('.register-form input');
+    var $registerFormButton = $('.register-form .form-button');
+    var $registerAccount = $('.regiter-account');
     var $registerPassword = $('.register-password');
     var $registerRepeatPassword = $('.register-repeat-password');
+    var $registerBoxFormInfo = $('.register-form .box-form-info');
+
+
+    $bottomLogin.click(function (e) {
+        $loginForm.show();
+        $registerForm.hide();
+        $bottomRegister.show();
+        $bottomLogin.hide();
+    });
+    $lognFormInput.on('focus', function () {
+        $loginBoxFormInfo.hide();
+    });
+    $loginFormButton.click(function (e) {
+        let account = $loginAccount.val();
+        let password = $loginPassword.val();
+        if (account && password) {
+            $.ajax({
+                type: 'POST',
+                url: '/login',
+                data: {
+                    account,
+                    password
+                },
+                success: function (data) {
+                    switch (data.loginType) {
+                        case 'success':
+                            location.href = '/home';
+                            break;
+                        default:
+                            $loginBoxFormInfo.text(data.msg).show();
+                            break;
+                    }
+                }
+            });
+            return;
+        }
+        if (!account || !password) {
+            // $loginAccount.addClass('input-error');
+            $loginBoxFormInfo.text('请输入账号或密码').show();
+        }
+    });
 
     $bottomRegister.click(function (e) {
         $registerForm.show();
@@ -331,13 +415,60 @@
         $bottomRegister.hide();
         $bottomLogin.show();
     });
-    $bottomLogin.click(function (e) {
-        $loginForm.show();
-        $registerForm.hide();
-        $bottomRegister.show();
-        $bottomLogin.hide();
+    $registerFormInput.on('focus', function () {
+        $registerBoxFormInfo.hide();
+        // console.log('change');
     });
-    
+    $registerFormButton.click(function (e) {
+        let account = $registerAccount.val();
+        let password = $registerPassword.val();
+        let repearPassword = $registerRepeatPassword.val();
+        if (account && password && repearPassword) {
+            if (password === repearPassword) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/register',
+                    data: {
+                        account,
+                        password
+                    },
+                    success: function (data) {
+                        switch (data.registerType) {
+                            case 'success':
+                                location.href = '/login';
+                                break;
+                            default:
+                                $registerBoxFormInfo.text(data.msg).show();
+                                break;
+                        }
+                    }
+                });
+                return;
+            } else {
+                $registerBoxFormInfo.text('两次输入密码不一致').show();
+            }
+        }
+        if (!account || !password) {
+            // $loginAccount.addClass('input-error');
+            $registerBoxFormInfo.text('请输入账号或密码').show();
+        }
+        if (!repearPassword) {
+            $registerBoxFormInfo.text('请再次输入密码').show();
+        }
+    });
+    $('.log-trigger').on('click',function(e){
+        var xpath = readXPath(e);
+        var log = {
+            xpath:xpath,
+            type:'click',
+            time: +new Date()
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/log',
+            data: log
+        });
+    });
 </script>
 
 </html>

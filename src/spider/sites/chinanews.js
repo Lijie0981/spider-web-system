@@ -20,7 +20,7 @@ class Chinanews extends Spider {
                     let date = linkReg.exec(href)[2];
                     this.log(year, nowYear, date, nowDate);
                     if (year === nowYear && nowDate === date) {
-                        href = href[0] === '/' ? res.request.url + href.substring(1) : href;
+                        href = href[0] === '/' && !href.match(/\/\//) ? res.request.url + href.substring(1) : href;
                         if (href.indexOf('shipin') !== -1 || href.indexOf(this.site.key) == -1) { return; }
                         this.site.pageLinks.add(href);
                         let article = await this.parseArticle(href, column);

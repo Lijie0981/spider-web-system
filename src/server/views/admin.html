@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="public/js/jquery.min.js"></script>
+    <title>及时雨-一个更快更全的新闻嗅探器</title>
+</head>
+<style>
+    /* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+    html,
+    body,
+    div,
+    span,
+    applet,
+    object,
+    iframe,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+
+    /* HTML5 display-role reset for older browsers */
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    section {
+        display: block;
+    }
+
+    body {
+        line-height: 1;
+    }
+
+    ol,
+    ul {
+        list-style: none;
+    }
+
+    blockquote,
+    q {
+        quotes: none;
+    }
+
+    a {
+        text-decoration: none;
+        color: #000;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0) !important;
+    }
+
+    blockquote:before,
+    blockquote:after,
+    q:before,
+    q:after {
+        content: '';
+        content: none;
+    }
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    button {
+        display: inline-block;
+        padding: 0 16px;
+        font-size: 14px;
+        line-height: 32px;
+        color: #8590a6;
+        text-align: center;
+        cursor: pointer;
+        background: none;
+        border: 1px solid;
+        border-radius: 3px;
+    }
+
+    .c-gap-top-zero {
+        margin-top: 0 !important;
+    }
+
+    .c-gap-top-small {
+        margin-top: 5px;
+    }
+
+    .c-gap-top {
+        margin-top: 10px;
+    }
+
+    .c-gap-top-large {
+        margin-top: 15px;
+    }
+
+    .c-gap-left-zero {
+        margin-left: 0;
+    }
+
+    .c-gap-left-small {
+        margin-left: 5px;
+    }
+
+    .c-gap-left {
+        margin-left: 10px;
+    }
+
+    .c-gap-left-large {
+        margin-left: 15px;
+    }
+
+    .c-gap-right-zero {
+        margin-right: 0;
+    }
+
+    .c-gap-right-small {
+        margin-right: 5px;
+    }
+
+    .c-gap-right {
+        margin-right: 10px;
+    }
+
+    .c-gap-right-large {
+        margin-right: 15px;
+    }
+
+    .c-gap-right-zero {
+        margin-right: 0;
+    }
+
+    .c-gap-right-small {
+        margin-right: 5px;
+    }
+
+    .c-gap-right {
+        margin-right: 10px;
+    }
+
+    .c-gap-right-large {
+        margin-right: 15px;
+    }
+
+    .row {
+        display: -webkit-box;
+        display: -webkit-flex;
+        width: auto;
+        -webkit-align-content: flex-start;
+        -webkit-align-items: stretch;
+        -webkit-box-align: stretch;
+        -webkit-box-direction: normal;
+        -webkit-box-lines: single;
+        -webkit-box-orient: horizontal;
+        -webkit-box-pack: justify;
+        -webkit-flex-direction: row;
+        -webkit-flex-wrap: nowrap;
+        -webkit-justify-content: space-between;
+    }
+
+    .c-span {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 auto;
+        padding-right: 1.03092784%;
+        padding-left: 1.03092784%;
+        position: relative;
+        width: 16.666667%;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .c-span1,
+    .c-span2,
+    .c-span3,
+    .c-span4,
+    .c-span5,
+    .c-span6,
+    .c-span7,
+    .c-span8,
+    .c-span9,
+    .c-span10,
+    .c-span11,
+    .c-span12 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 1.03092784%;
+        padding-left: 1.03092784%;
+    }
+
+    .c-span4 {
+        width: 33.33333333%;
+        -webkit-box-flex: 4;
+        -webkit-flex: 4 4 auto;
+    }
+
+    .c-span8 {
+        width: 66.66666667%;
+        -webkit-box-flex: 8;
+        -webkit-flex: 8 8 auto;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+        clear: both;
+
+    }
+
+    .clearfix {
+        *zoom: 1;
+        /* clear: both; */
+    }
+
+    .line-clamp2,
+    .line-clamp3,
+    .line-clamp4,
+    .line-clamp5 {
+        display: -webkit-box;
+        overflow: hidden;
+        margin-bottom: 5px;
+        white-space: normal;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+    }
+
+    .line-clamp1 {
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .line-clamp2 {
+        -webkit-line-clamp: 2;
+    }
+
+    .line-clamp3 {
+        -webkit-line-clamp: 3;
+    }
+
+    .line-clamp4 {
+        -webkit-line-clamp: 4;
+    }
+
+    .line-clamp5 {
+        -webkit-line-clamp: 5;
+    }
+
+    .header {
+        height: 6vh;
+        text-align: center;
+        line-height: 6vh;
+        border-bottom: 1px solid #eee;
+        box-shadow: 0px 0px 60px rgba(0, 0, 0, .05);
+    }
+
+    .content {
+        height: 88vh;
+        background: #f1f1f1;
+        overflow: scroll;
+    }
+
+    .bottom {
+        height: 6vh;
+        line-height: 6vh;
+    }
+</style>
+<body>
+    <header class="header">
+        <%block header%>
+        及时雨
+        <%endblock%>
+    </header>
+    <div class="content">
+        <% block content %>
+        <% endblock %>
+    </div>
+    <footer class="bottom">
+        
+    </footer>
+</body>
+</html>
