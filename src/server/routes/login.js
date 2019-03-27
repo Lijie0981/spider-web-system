@@ -14,7 +14,7 @@ router.get('/', function (req, res) {
 });
 router.get('/admin', function (req, res) {
     if(req.session && req.session.admin){
-        res.redirect('/admin');
+        res.redirect('admin');
     } else {
         res.render('adminLogin.html');
     }

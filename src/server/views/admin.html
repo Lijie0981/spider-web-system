@@ -351,28 +351,73 @@
     }
 
     .content {
-        height: 88vh;
+        height: 94vh;
         background: #f1f1f1;
-        overflow: scroll;
     }
 
     .bottom {
         height: 6vh;
         line-height: 6vh;
+        border-top: 1px solid #eee;
+    }
+
+    .content-left {
+        width: 20%;
+        height: 100%;
+        float: left;
+        background: #29333a;
+        background-color: #29333a;
+        color: #e1ffff;
+    }
+
+    .admin-feature-item {
+        height: 42px;
+        line-height: 42px;
+        box-sizing: border-box;
+    }
+
+    .admin-feature-item a {
+        color: #e1ffff;
+        display: block;
+        padding-left: 15px;
+    }
+
+    .admin-feature-item.active {
+        border-left: 3px solid #00acac;
+        background-color: #4f5b69;
+    }
+
+    .content-right {
+        width: 80%;
+        height: 100%;
+        float: left;
+        display: inline-block;
+        background: #d9e0e7;
     }
 </style>
+
 <body>
     <header class="header">
         <%block header%>
-        及时雨
+        后台管理-及时雨
         <%endblock%>
     </header>
-    <div class="content">
-        <% block content %>
-        <% endblock %>
+    <div class="content clearfix">
+        <div class="content-left">
+            <ul class="admin-feature-list">
+                <li class="admin-feature-item active"><a href="">爬虫任务</a></li>
+                <li class="admin-feature-item"><a href="">系统状态</a></li>
+                <li class="admin-feature-item"><a href="">用户管理</a></li>
+                <li class="admin-feature-item"><a href="">爬虫配置</a></li>
+            </ul>
+        </div>
+        <div class="content-right">
+
+        </div>
     </div>
-    <footer class="bottom">
-        
-    </footer>
+    <!-- <footer class="bottom">
+
+    </footer> -->
 </body>
+
 </html>
