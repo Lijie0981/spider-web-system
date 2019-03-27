@@ -13,8 +13,11 @@ let admin = new User({
     password: '123',
     createTime: +new Date()
 });
-let that = this;
-admin.save(function (err) {
-    if (err) console.log(err);
+Admin.findOne({ account: '123' }, function (err, result) {
+    if (!result) {
+        admin.save(function (err) {
+            if (err) console.log(err);
+        });
+    }
 });
 module.exports = Admin;
