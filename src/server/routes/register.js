@@ -2,12 +2,6 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const debug = require('debug')('server:register');
-
-// middleware that is specific to this router
-router.use(function timeLog(req, res, next) {
-    console.log('Time: ', Date.now());
-    next();
-});
 // define the home page route
 router.get('/', function (req, res) {
     res.render('login.html');
@@ -36,7 +30,7 @@ router.post('/', async function (req, res) {
                 joinTime: +new Date()
             });
             user.save(function (err) {
-                if (err) console.log(err);
+                if (err) debug(err);
             });
             res.json({
                 registerType: 'success'

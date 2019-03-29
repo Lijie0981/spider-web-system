@@ -16,6 +16,8 @@ const register = require('./routes/register');
 const news = require('./routes/new');
 const log = require('./routes/log');
 const admin = require('./routes/admin');
+const logout = require('./routes/logout');
+
 // Setup nunjucks templating engine
 nunjucks.configure(path.join(__dirname, viewPath), {
     autoescape: true,
@@ -24,8 +26,8 @@ nunjucks.configure(path.join(__dirname, viewPath), {
     tags: {
         blockStart: '<%',
         blockEnd: '%>',
-        variableStart: '<$',
-        variableEnd: '$>',
+        variableStart: '{$',
+        variableEnd: '$}',
         commentStart: '<#',
         commentEnd: '#>'
     }
@@ -56,6 +58,8 @@ app.use('/register', register);
 app.use('/new', news);
 app.use('/log', log);
 app.use('/admin', admin);
+app.use('/logout', logout);
+
 // Kick start our server
 app.listen(app.get('port'), function () {
     debug('Server started on port', app.get('port'));

@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Log = require('../models/Log');
-// define the home page route
+const debug = require('debug')('server:log');
 router.get('/', function (req, res) {
-    console.log(req.query, decodeURIComponent(req.query.tc));
     if (req.query.tc) {
         let log = new Log({
             time: +new Date(),

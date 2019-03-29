@@ -21,12 +21,13 @@ class Spider {
         this.runFlag = true;
     }
     async parseHead() {
-        if (Object.values(SITE_CONF[this.site.key].subLinks).length !== 0) { this.log(SITE_CONF[this.site.key].subLinks); return; }
+        if (SITE_CONF[this.site.key].subLinks && Object.values(SITE_CONF[this.site.key].subLinks).length !== 0) { this.log(SITE_CONF[this.site.key].subLinks); return; }
         let { $, res } = await this.getPageContent(this.site.index);
         let $headers = $(SITE_CONF[this.site.key].htmlClass.header);
         let subLinks = {};
         $headers.each((i, e) => {
-            let herf = cheerio(e).attr('href').indexOf('http') == -1 ? res.request.protocol + cheerio(e).attr('href') : cheerio(e).attr('href');
+            let herf = href.indexOf('//') == 1 && cheerio(e).attr('href').indexOf('http') == -1 ? res.request.protocol + cheerio(e).attr('href') : cheerio(e).attr('href');
+            href = href.match(/\.(com|cn)/) ? href : this.site.index + href.substring(1);
             subLinks[cheerio(e).text().trim()] = herf;
         });
         this.setSubLinks(subLinks);

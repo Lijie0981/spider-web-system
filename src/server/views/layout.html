@@ -282,6 +282,12 @@
         padding-left: 1.03092784%;
     }
 
+    .c-span6 {
+        width: 50%;
+        -webkit-box-flex: 6;
+        -webkit-flex: 6 6 auto;
+    }
+
     .c-span4 {
         width: 33.33333333%;
         -webkit-box-flex: 4;
@@ -292,6 +298,54 @@
         width: 66.66666667%;
         -webkit-box-flex: 8;
         -webkit-flex: 8 8 auto;
+    }
+
+    .c-span2 {
+        width: 16.66666667%;
+        -webkit-box-flex: 2;
+        -webkit-flex: 2 2 auto;
+    }
+
+    .c-span3 {
+        width: 25%;
+        -webkit-box-flex: 3;
+        -webkit-flex: 3 3 auto;
+    }
+
+    .c-span5 {
+        width: 41.66666667%;
+        -webkit-box-flex: 5;
+        -webkit-flex: 5 5 auto;
+    }
+
+    .c-span7 {
+        width: 58.33333333%;
+        -webkit-box-flex: 7;
+        -webkit-flex: 7 7 auto;
+    }
+
+    .c-span9 {
+        width: 75%;
+        -webkit-box-flex: 9;
+        -webkit-flex: 9 9 auto;
+    }
+
+    .c-span1 {
+        width: 8.33333333%;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 auto;
+    }
+
+    .c-span11 {
+        width: 91.66666667%;
+        -webkit-box-flex: 11;
+        -webkit-flex: 11 11 auto;
+    }
+
+    .c-span12 {
+        width: 100%;
+        -webkit-box-flex: 12;
+        -webkit-flex: 12 12 auto;
     }
 
     .clearfix:before,
@@ -343,6 +397,10 @@
     }
 
     .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 4vw;
         height: 6vh;
         text-align: center;
         line-height: 6vh;
@@ -419,11 +477,27 @@
         color: #999;
     }
 </style>
+
 <body>
     <header class="header">
-        <%block header%>
-        及时雨
-        <%endblock%>
+        <a href="">刷新</a>
+        <span>
+            <%block header%>
+            及时雨
+            <%endblock%>
+        </span>
+        <span>
+            <% if user %>
+            <a href="/logout">
+                注销
+            </a>
+
+            <% else %>
+            <a href="/login">
+                登录
+            </a>
+            <% endif %>
+        </span>
     </header>
     <div class="content">
         <% block content %>
@@ -440,48 +514,49 @@
     </div>
 </body>
 <script>
-        function readXPath(element) {
-            if (element.id !== "") {//判断id属性，如果这个元素有id，则显 示//*[@id="xPath"]  形式内容
-                return '//*[@id=\"' + element.id + '\"]';
+    function readXPath(element) {
+        if (element.id !== "") {//判断id属性，如果这个元素有id，则显 示//*[@id="xPath"]  形式内容
+            return '//*[@id=\"' + element.id + '\"]';
+        }
+
+        if (element.getAttribute("class") !== null) { //判断class属性，如果这个元素有class，则显 示//*[@class="xPath"]  形式内容
+            return '//*[@class=\"' + element.getAttribute("class") + '\"]';
+        }
+        //因为Xpath属性不止id和class，所以还可以更具class形式添加属性
+
+        //这里需要需要主要字符串转译问题，可参考js 动态生成html时字符串和变量转译（注意引号的作用）
+
+
+        if (element == document.body) {//递归到body处，结束递归
+            return '/html/' + element.tagName;
+        }
+
+
+        var ix = 0,//在nodelist中的位置，且每次点击初始化
+            siblings = element.parentNode.childNodes;//同级的子元素
+
+        for (var i = 0, l = siblings.length; i < l; i++) {
+            var sibling = siblings[i];
+            if (sibling == element) {//如果这个元素是siblings数组中的元素，则执行递归操作
+                return arguments.callee(element.parentNode) + '/' + element.tagName + ((ix + 1) == 1 ? '' : '[' + (ix + 1) + ']');//ix+1是因为xpath是从1开始计数的，element.tagName+((ix+1)==1?'':'['+(ix+1)+']')三元运算符，如果是第一个则不显示，从2开始显示
+            } else if (sibling.nodeType == 1 && sibling.tagName == element.tagName) {//如果不符合，判断是否是element元素，并且是否是相同元素，如果是相同的就开始累加
+                ix++;
             }
-    
-            if (element.getAttribute("class") !== null) { //判断class属性，如果这个元素有class，则显 示//*[@class="xPath"]  形式内容
-                return '//*[@class=\"' + element.getAttribute("class") + '\"]';
-            }
-            //因为Xpath属性不止id和class，所以还可以更具class形式添加属性
-    
-            //这里需要需要主要字符串转译问题，可参考js 动态生成html时字符串和变量转译（注意引号的作用）
-    
-    
-            if (element == document.body) {//递归到body处，结束递归
-                return '/html/' + element.tagName;
-            }
-    
-    
-            var ix = 0,//在nodelist中的位置，且每次点击初始化
-                siblings = element.parentNode.childNodes;//同级的子元素
-    
-            for (var i = 0, l = siblings.length; i < l; i++) {
-                var sibling = siblings[i];
-                if (sibling == element) {//如果这个元素是siblings数组中的元素，则执行递归操作
-                    return arguments.callee(element.parentNode) + '/' + element.tagName + ((ix + 1) == 1 ? '' : '[' + (ix + 1) + ']');//ix+1是因为xpath是从1开始计数的，element.tagName+((ix+1)==1?'':'['+(ix+1)+']')三元运算符，如果是第一个则不显示，从2开始显示
-                } else if (sibling.nodeType == 1 && sibling.tagName == element.tagName) {//如果不符合，判断是否是element元素，并且是否是相同元素，如果是相同的就开始累加
-                    ix++;
-                }
-            }
-        };
-        $('.log-trigger').on('click',function(e){
-            var xpath = readXPath(e);
-            var log = {
-                xpath:xpath,
-                type:'click',
-                time: +new Date()
-            }
-            $.ajax({
-                type: 'POST',
-                url: '/log',
-                data: log
-            });
+        }
+    };
+    $('.log-trigger').on('click', function (e) {
+        var xpath = readXPath(e);
+        var log = {
+            xpath: xpath,
+            type: 'click',
+            time: +new Date()
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/log',
+            data: log
         });
-    </script>
+    });
+</script>
+
 </html>

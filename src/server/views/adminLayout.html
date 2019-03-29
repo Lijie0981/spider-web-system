@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="public/js/jquery.min.js"></script>
+    <script src="/public/js/jquery.min.js"></script>
     <title>及时雨-一个更快更全的新闻嗅探器</title>
 </head>
 <style>
@@ -405,14 +405,33 @@
     <div class="content clearfix">
         <div class="content-left">
             <ul class="admin-feature-list">
-                <li class="admin-feature-item active"><a href="">爬虫任务</a></li>
-                <li class="admin-feature-item"><a href="">系统状态</a></li>
-                <li class="admin-feature-item"><a href="">用户管理</a></li>
-                <li class="admin-feature-item"><a href="">爬虫配置</a></li>
+                <li class="admin-feature-item task"><a href="/admin/task">爬虫任务</a></li>
+                <li class="admin-feature-item status"><a href="/admin/status">系统状态</a></li>
+                <li class="admin-feature-item user"><a href="/admin/user">用户列表</a></li>
+                <li class="admin-feature-item config"><a href="/admin/config">爬虫配置</a></li>
             </ul>
+            <script>
+                $(document).ready(function () {
+                    var path = location.href.split('/').pop();
+                    $('li.' + path).addClass('active');
+                });
+            </script>
         </div>
         <div class="content-right">
-
+            <style>
+                .admin-right-title {
+                    background: white;
+                    line-height: 30px;
+                    padding: 20px;
+                    margin: 0 0 8px;
+                    font-weight: bolder;
+                }
+            </style>
+            <div class="admin-right-title">
+                <%block rightTitle%><% endblock %>
+            </div>
+            <% block right%>
+            <%endblock%>
         </div>
     </div>
     <!-- <footer class="bottom">

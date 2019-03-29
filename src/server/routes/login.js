@@ -20,7 +20,6 @@ router.get('/admin', function (req, res) {
     }
 });
 router.post('/', async function (req, res) {
-    debug('post', req.body);
     let {account,password} = req.body;
     if (account && password) {
         let user = await new Promise((res, rej)=>{
@@ -45,7 +44,6 @@ router.post('/', async function (req, res) {
     }
 });
 router.post('/admin', async function (req, res) {
-    debug('post', req.body);
     let {account,password} = req.body;
     if (account && password) {
         let admin = await new Promise((res, rej)=>{

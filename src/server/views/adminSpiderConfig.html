@@ -1,0 +1,21 @@
+<% extends "adminLayout.html" %>
+<%block rightTitle%>
+爬虫配置
+<% endblock %>
+<% block right%>
+<style>
+    .config-content {
+        height: 100%;
+        overflow: scroll;
+        line-height: 34px;
+        padding: 20px;
+    }
+
+    pre {
+        white-space: pre-wrap;
+    }
+</style>
+<pre class="config-content" contenteditable="false">
+    <!-- {$ config |dump | safe $} -->
+</pre>
+<%endblock%>

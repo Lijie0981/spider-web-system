@@ -417,7 +417,6 @@
     });
     $registerFormInput.on('focus', function () {
         $registerBoxFormInfo.hide();
-        // console.log('change');
     });
     $registerFormButton.click(function (e) {
         let account = $registerAccount.val();
@@ -456,7 +455,7 @@
             $registerBoxFormInfo.text('请再次输入密码').show();
         }
     });
-    $('.log-trigger').on('click',function(e){
+    $('.log-trigger, button, a').on('click',function(e){
         var xpath = readXPath(e);
         var log = {
             xpath:xpath,

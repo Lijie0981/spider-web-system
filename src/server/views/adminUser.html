@@ -1,0 +1,58 @@
+<% extends "adminLayout.html" %>
+<%block rightTitle%>
+用户列表
+<% endblock %>
+<% block right%>
+<style>
+    .home-top {
+        background: white;
+        padding: 2vh 4vw;
+        margin-bottom: 8px;
+    }
+
+    .home-subtitle {
+        padding: 0 4vw;
+        border-bottom: 1px solid #eee;
+        overflow: hidden;
+        height: 5vh;
+        background: white;
+        line-height: 5vh;
+    }
+
+    .avatar-wrap {
+        display: flex;
+        align-self: center;
+        justify-content: flex-start;
+    }
+
+    .avatar {
+        width: 5vh;
+        height: 5vh;
+        border-radius: 50%;
+        border: 2px solid #fff;
+    }
+
+    .account-wrap {
+        display: flex;
+        flex-flow: column;
+        justify-content: space-around;
+    }
+</style>
+<% for user in users %>
+<div class="home-top">
+    <div class="home-info row">
+        <div class="c-span1 avatat-wrap">
+            <img src="{$ user.avatar $}" class="avatar" alt="">
+        </div>
+        <div class="c-span8 account-wrap">
+            <h2 class="account">{$ user.account $}</h2>
+            <!-- <p class="account">{$ user.avatar $}</p> -->
+        </div>
+    </div>
+</div>
+
+<% else %>
+没有用户
+<% endfor %>
+
+<%endblock%>

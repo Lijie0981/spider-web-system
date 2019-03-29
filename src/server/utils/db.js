@@ -14,11 +14,10 @@ class DB {
                     $gte: +moment(moment().format('YYYY-MM-DD 00:00:00')),
                     $lte: +moment(moment().format('YYYY-MM-DD 23:59:59'))
                 }
-            }).sort({ time: 'asc' }).exec(function (err, results) {
+            }).sort({ time: 'desc' }).limit(100).exec(function (err, results) {
                 if (err) {
                     debug(err, `查询${this.site.name}数据错误`);
                 }
-                debug(results.length);
                 res(results);
             });
         });
@@ -34,11 +33,10 @@ class DB {
                     $gte: +moment(moment().format('YYYY-MM-DD 00:00:00')),
                     $lte: +moment(moment().format('YYYY-MM-DD 23:59:59'))
                 }
-            }).sort({ time: 'asc' }).exec(function (err, results) {
+            }).sort({ time: 'desc' }).limit(100).exec(function (err, results) {
                 if (err) {
                     debug(err, `查询数据错误`);
                 }
-                debug(results);
                 res(results);
             });
         });

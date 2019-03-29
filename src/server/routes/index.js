@@ -17,15 +17,14 @@ router.get('/', async function (req, res) {
             });
         });
         if (user && user.subscription) {
-            let articles = db.getColumnArticle(user.subscription);
-            res.render('index.html', { articles });
+            let articles = await db.getColumnArticle(user.subscription);
+            res.render('index.html', { articles, user });
         } else {
             let articles = await db.getTodayArticles();
             res.render('index.html', { articles });
         }
     } else {
         let articles = await db.getTodayArticles();
-        console.log(typeof articles, Object.keys(articles));
         res.render('index.html', { articles });
     }
 });

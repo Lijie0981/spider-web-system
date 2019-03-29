@@ -12,6 +12,7 @@
         float: left;
         margin: 0 20px 15px 0;
         list-style: none;
+        cursor: pointer;
     }
 
     .news-column-name.current {
@@ -48,9 +49,10 @@
         padding: 0 4vw;
         border-bottom: 1px solid #eee;
         overflow: hidden;
-        height: 5vh;
+        height: 6vh;
         background: white;
-        line-height: 5vh;
+        line-height: 6vh;
+        font-size: 18px;
     }
 
     .avatar-wrap {
@@ -75,15 +77,19 @@
     .account {
         /* margin-bottom: 5px;  */
     }
+
     .home-info-change {
         display: none;
     }
+
     .home-info button {
-        border-radius: 8px; 
+        border-radius: 8px;
     }
+
     .change-form {
         margin-top: 10px;
     }
+
     .form-input-wrap {
         position: relative;
         display: flex;
@@ -141,6 +147,18 @@
         color: #175199;
         cursor: pointer;
     }
+
+    .box-form-info {
+        color: red;
+        margin-top: 15px;
+        text-align: left;
+        display: none;
+    }
+
+    .change-info-button-cancel {
+        display: none;
+        background-color: #ff5858;
+    }
 </style>
 <div class="home-top">
     <div class="home-info row">
@@ -148,134 +166,143 @@
             <img src="https://pic3.zhimg.com/v2-a8e47c73bdfec24dbfeef5ec43edd012_xl.jpg" class="avatar" alt="">
         </div>
         <div class="c-span8 account-wrap">
-            <h2 class="account">lijie</h2>
-            <p class="account">wode</p>
+            <h2 class="account">{$ user.account $}</h2>
         </div>
-        <div class="c-span1">
+        <div class="c-span3">
             <button class="form-button c-gap-top-zero change-info-button">
-                修改
+                修改密码
+            </button>
+            <button class="change-info-button-cancel form-button c-gap-top-zero">
+                取消
             </button>
         </div>
-    </div> 
+    </div>
     <div class="home-info-change">
-            <form action="" class="change-form">
-                    <div class="form-input-wrap">
-                        <input type="password" name="password" id="register-password" class="form-input register-password" placeholder="密码">
-    
-                    </div>
-                    <div class="form-input-wrap">
-                        <input type="password" name="repeat-password" id="register-repeat-password" class="form-input register-repeat-password"
-                            placeholder="确认密码">
-    
-                    </div>
-                    <button type="submit" class="form-button change-info-submit">提交</button>
-                </form>
+        <form action="" class="change-form">
+            <div class="form-input-wrap">
+                <input type="password" name="password" id="change-password" class="form-input change-password"
+                    placeholder="密码">
+
+            </div>
+            <div class="form-input-wrap">
+                <input type="password" name="repeat-password" id="change-repeat-password"
+                    class="form-input change-repeat-password" placeholder="确认密码">
+            </div>
+            <div class="box-form-info">
+            </div>
+            <button type="button" class="form-button change-info-submit">提交</button>
+        </form>
     </div>
 </div>
+<% if subscription %>
 <div class="home-subtitle">
-    订阅
+    我的订阅
 </div>
+<% endif %>
 <ul class="news-list">
+    <% for site in subscription %>
     <li class="news-list-item">
-        <h2 class="news-title">人民网</h2>
+        <h2 class="news-title">{$ site.site $}</h2>
         <ul class="news-column-list clearfix">
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
+            <% for subLink in site.subLinks %>
+            <li class="news-column-item"><span class="news-column-name"
+                    data-value="{$ site.site $}-{$ subLink.column $}">{$ subLink.column $}</span></li>
+            <% endfor%>
         </ul>
     </li>
-    <li class="news-list-item">
-        <h2 class="news-title">人民网</h2>
-        <ul class="news-column-list clearfix">
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-        </ul>
-    </li>
-    <li class="news-list-item">
-        <h2 class="news-title">人民网</h2>
-        <ul class="news-column-list clearfix">
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-        </ul>
-    </li>
-    <li class="news-list-item">
-        <h2 class="news-title">人民网</h2>
-        <ul class="news-column-list clearfix">
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-        </ul>
-    </li>
-    <li class="news-list-item">
-        <h2 class="news-title">人民网</h2>
-        <ul class="news-column-list clearfix">
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-        </ul>
-    </li>
-    <li class="news-list-item">
-        <h2 class="news-title">人民网</h2>
-        <ul class="news-column-list clearfix">
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-        </ul>
-    </li>
-    <li class="news-list-item">
-        <h2 class="news-title">人民网</h2>
-        <ul class="news-column-list clearfix">
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-        </ul>
-    </li>
-    <li class="news-list-item">
-        <h2 class="news-title">人民网</h2>
-        <ul class="news-column-list clearfix">
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-        </ul>
-    </li>
-    <li class="news-list-item">
-        <h2 class="news-title">人民网</h2>
-        <ul class="news-column-list clearfix">
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-            <li class="news-column-item"><span class="news-column-name">时政</span></li>
-        </ul>
-    </li>
+    <% endfor %>
 </ul>
 <script>
     var $changeButton = $('.change-info-button');
+    var $changeButtonCancel = $('.change-info-button-cancel');
     var $newsColumeName = $('.news-column-name');
     var $changeSubmitBtn = $('.change-info-submit');
     var $homeInfoChange = $('.home-info-change');
-
-    $changeButton.click(function(){
+    var subscription = [];
+    var $changeRepeatPassword = $('.change-repeat-password');
+    var $changePassword = $('.change-password');
+    $changeButton.click(function () {
         $homeInfoChange.show();
         $changeButton.hide();
+        $changeButtonCancel.show();
     });
-    $newsColumeName.click(function(e){
+    $changeButtonCancel.click(function () {
+        $homeInfoChange.hide();
+        $changeButton.show();
+        $changeButtonCancel.hide();
+    });
+    $newsColumeName.click(function (e) {
         var $target = $(e.target);
         let addClass = 'current';
+        var subValue = $target.attr('data-value').split('-');
         if ($target.hasClass(addClass)) {
+            subscription.forEach((item, index) => {
+                if (item.site == subValue[0] && item.column == subValue[1]) {
+                    subscription.splice(index, 1);
+                }
+            });
             $target.removeClass(addClass);
         } else {
+            subscription.push({
+                site: subValue[0],
+                column: subValue[1],
+            });
             $target.addClass(addClass);
         }
+        $.ajax({
+            url: 'home/setSubscription',
+            type: 'POST',
+            data: { subscription: JSON.stringify(subscription) },
+            dataType: 'json',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    subscription = data;
+                    $.each(data, function (key, value) {
+                        $('span[data-value=' + value.site + '-' + value.column + ']').addClass('current');
+                    });
+                }
+            }
+        })
     });
+    $(document).ready(function () {
+        $.ajax({
+            url: 'home/getSubscription',
+            type: 'GET',
+            success: function (data) {
+                if (data && data.length > 0) {
+                    subscription = data;
+                    $.each(data, function (key, value) {
+                        $('span[data-value=' + value.site + '-' + value.column + ']').addClass('current');
+                    });
+                }
+            }
+        });
+    });
+    $changeSubmitBtn.click(function () {
+        changePassword();
+    });
+    function changePassword() {
+        var password = $changePassword.val();
+        var repeatPassword = $changeRepeatPassword.val();
+        if (password && repeatPassword && password === repeatPassword) {
+            $.ajax({
+                url: 'home/changePassword',
+                data: { password: password },
+                type: 'POST',
+                success: function (data) {
+                    if (data.changeStatus = 'success') {
+                        window.location.href = '/login';
+                    } else {
+                        $('.box-form-info').text('当前密码输入有误~ ');
+                    }
+                }
+            });
+        } else {
+            $('.box-form-info').text('输入有误~ ');
+        }
+    };
+    function changeAvatar() {
+
+    }
 </script>
 <% endblock %>
