@@ -26,9 +26,9 @@ class Spider {
         let $headers = $(SITE_CONF[this.site.key].htmlClass.header);
         let subLinks = {};
         $headers.each((i, e) => {
-            let herf = href.indexOf('//') == 1 && cheerio(e).attr('href').indexOf('http') == -1 ? res.request.protocol + cheerio(e).attr('href') : cheerio(e).attr('href');
+            let href = cheerio(e).attr('href').indexOf('//') == 1 && cheerio(e).attr('href').indexOf('http') == -1 ? res.request.protocol + cheerio(e).attr('href') : cheerio(e).attr('href');
             href = href.match(/\.(com|cn)/) ? href : this.site.index + href.substring(1);
-            subLinks[cheerio(e).text().trim()] = herf;
+            subLinks[cheerio(e).text().trim()] = href;
         });
         this.setSubLinks(subLinks);
         return this;
