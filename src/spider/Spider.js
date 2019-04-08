@@ -1,14 +1,14 @@
-const cheerio = require('cheerio');
-const debug = require('debug');
-const request = require('request');
-const iconv = require('iconv-lite');
-const siteConfPath = '../config/site.json';
+const cheerio = require('cheerio'); // 网页解析工具
+const debug = require('debug');    // 运行日志输出工具
+const request = require('request'); // 网络请求工具
+const iconv = require('iconv-lite'); // 编码转换工具
+const siteConfPath = '../config/site.json'; 
 const SITE_CONF = require('../config/site.js');
-const fs = require('fs');
-const path = require('path');
-const Article = require('./models/Article');
-const moment = require('moment');
-const Url = require('url-parse');
+const fs = require('fs'); // 文件操作工具
+const path = require('path'); // 路径操作工具
+const Article = require('./models/Article'); // 文章对象
+const moment = require('moment'); // 时间处理工具
+const Url = require('url-parse'); // url解析工具
 class Spider {
     constructor(site) {
         this.site = site;
