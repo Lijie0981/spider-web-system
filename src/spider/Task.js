@@ -1,10 +1,6 @@
-const { netease } = require('./sites/netease');
-const { chinanews } = require('./sites/chinanews');
-const { people } = require('./sites/people');
-const { sina } = require('./sites/sina');
-const { xinhuanet } = require('./sites/xinhuanet');
+
 class SpiderTask {
-    constructor() {
+    constructor(key) {
         this.taskStack = new Set();
     }
     add(spider) {
@@ -42,14 +38,8 @@ class SpiderTask {
         }
     }
     status(spider){
-        
+
     }
 }
 let task = new SpiderTask();
-let spiders = [netease, people, sina, xinhuanet, chinanews];
-spiders.forEach((spider) => {
-    task.add(spider);
-});
-task.run();
-
 module.exports = task;

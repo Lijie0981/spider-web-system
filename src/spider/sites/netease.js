@@ -1,5 +1,4 @@
 const { Spider } = require('../Spider');
-const SITE_CONF = require('../../config/site.js');
 const cheerio = require('cheerio');
 const moment = require('moment');
 class Netease extends Spider {
@@ -62,5 +61,4 @@ class Netease extends Spider {
         return null;
     }
 }
-let netease = new Netease(SITE_CONF.netease);
-module.exports = { Netease, netease };
+module.exports = Netease;

@@ -2,13 +2,14 @@ const cheerio = require('cheerio'); // 网页解析工具
 const debug = require('debug');    // 运行日志输出工具
 const request = require('request'); // 网络请求工具
 const iconv = require('iconv-lite'); // 编码转换工具
-const siteConfPath = '../config/site.json'; 
+const siteConfPath = '../config/site.json';
 const SITE_CONF = require('../config/site.js');
 const fs = require('fs'); // 文件操作工具
 const path = require('path'); // 路径操作工具
 const Article = require('./models/Article'); // 文章对象
 const moment = require('moment'); // 时间处理工具
 const Url = require('url-parse'); // url解析工具
+const task = require('./Task'); // 爬虫任务类
 class Spider {
     constructor(site) {
         this.site = site;
@@ -19,6 +20,8 @@ class Spider {
         this.errorNum = 0;
         this.parseTimes = 0;
         this.runFlag = true;
+        this.articleNum = 0;
+        task.add(this);
     }
     async parseHead() {
         if (SITE_CONF[this.site.key].subLinks && Object.values(SITE_CONF[this.site.key].subLinks).length !== 0) { this.log(SITE_CONF[this.site.key].subLinks); return; }
@@ -41,7 +44,7 @@ class Spider {
                 request({ uri: url, encoding: null }, (err, response, body) => {
                     if (err) {
                         rej(err);
-                        this.handleError(err, `请求${url}失败`);
+                        this.handleError(err, `请求${url} 失败`);
                     }
                     else {
                         let charset = "utf-8";
@@ -59,7 +62,6 @@ class Spider {
                                 }
                             })
                         }
-                        this.log('page charset',charset);
                         let resData = {
                             body: iconv.decode(body, charset),
                             response
@@ -122,52 +124,57 @@ class Spider {
         let stack = [];
         Object.values(this.site.subLinks).map(async ({ column, subLink }) => {
             stack.push(Promise.resolve(this.getPageContent(subLink)).then(({ $, res }) => {
-                this.log(+new Date(), subLink);
                 this.parseLink($, res, column);
             }));
         });
-        this.log(+new Date(), 'start');
-        Promise.all([...stack]).then(() => {
-            this.log('dispatch all sub sites success');
-        })
+        debugger;
+        this.log(moment().format('YYYY-MM-DD HH:mm:ss'), 'start');
+        if (stack.length > 0){
+            Promise.all([...stack]).then(() => {
+                this.log('请求完所有链接');
+            });
+        }
     }
     handleError(err, msg) {
         this.errorNum++;
         this.log(err, msg);
     }
     handleArticleSave() {
-        this.log('article saved');
+        this.log('新闻已保存');
     }
     parseTime(info) {
         if (!info) { return 0; }
         let reg = SITE_CONF[this.site.key].sourceTimeReg;
         let [, year, month, day, hour, minute] = reg.exec(info);
-        this.log(year, month, day, hour, minute);
         return +moment(`${year}-${month}-${day} ${hour}:${minute}`);
     }
     async run() {
-        this.log(`${this.startTime}：${this.site.name}新闻爬虫已开始任务。`);
         this.startTime = moment().format('YYYY-MM-DD HH:mm:ss');
+        this.log(`${this.site.name}新闻爬虫已开始任务。 ${this.startTime}`);
         this.init();
         await this.parseHead();
-        setInterval(async () => {
-            if (this.runFlag) {
-                await this.handleAllLinks();
-                this.fetchTimes++;
-                this.log(`第${this.fetchTimes}抓取\t${moment().format('YYYY-MM-DD HH:mm:ss')}`);
-            }
-        }, 60 * 1000);
+        this.runFetch();
+        setInterval(() => {
+            this.runFetch();
+        }, 4 * 1000);
+    }
+    async runFetch(){
+        if (this.runFlag) {
+            await this.handleAllLinks();
+            this.fetchTimes++;
+            this.log(`第${this.fetchTimes}次抓取\t${moment().format('YYYY-MM-DD HH:mm:ss')}`);
+        }
     }
     pause() {
         this.runFlag = false;
         this.parseTimes++;
         this.pauseTime = moment().format('YYYY-MM-DD HH:mm:ss');
-        this.log(`${this.site.name}新闻爬虫已暂停。${this.startTime}开始${this.parseTime}停止。\n请求次数${this.fetchTimes}`);
+        this.log(`${this.site.name}新闻爬虫已暂停。${this.startTime}开始${this.pauseTime}停止。\n请求次数${this.fetchTimes}`);
     }
     restart() {
         this.startTime = moment().format('YYYY-MM-DD HH:mm:ss');
         this.runFlag = true;
-        this.log(`${this.startTime}：${this.site.name}新闻爬虫已重新开始任务。`);
+        this.log(`${this.site.name}新闻爬虫已重新开始任务。${this.startTime}`);
     }
     init() {
         Article.remove({ site: this.site.name }, function (err) {
@@ -191,5 +198,3 @@ class Spider {
 }
 
 module.exports = { Spider };
-// TODO
-// 1. 获取所有链接要做去重处理。

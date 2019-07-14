@@ -1,5 +1,4 @@
 const { Spider } = require('../Spider');
-const SITE_CONF = require('../../config/site.js');
 const cheerio = require('cheerio');
 const moment = require('moment');
 class Chinanews extends Spider {
@@ -22,7 +21,6 @@ class Chinanews extends Spider {
                         href = href.match(/^\/\//) ? res.request.protocol + href : href;
                         if (href.indexOf('shipin') !== -1 || href.indexOf(this.site.key) == -1) { return; }
                         if (!this.site.pageLinks.has(href)) {
-                            this.log(href);
                             this.site.pageLinks.add(href);
                             let article = await this.parseArticle(href, column);
                             article && this.site.articles.set(href, article);
@@ -46,12 +44,17 @@ class Chinanews extends Spider {
                 site: this.site.name,
                 column
             };
-            this.log(article);
-            this.setArticle(article);
-            return article;
+            if (article.title && article.title.length > 0 && info && info.length > 0 && content && content.length > 0) {
+                this.setArticle(article);
+                this.articleNum ++;
+                this.log(`\n第${this.articleNum}篇文章：${article.title.slice(0,10)} ||  ${article.info.slice(0,10)}  ||  ${article.content.slice(0,10)}\n`);
+
+                return article;
+            } else {
+                return null;
+            }
         }
         return null;
     }
 }
-let chinanews = new Chinanews(SITE_CONF.chinanews);
-module.exports = { Chinanews, chinanews };
+module.exports = Chinanews;

@@ -1,5 +1,4 @@
 const { Spider } = require('../Spider');
-const SITE_CONF = require('../../config/site.js');
 const cheerio = require('cheerio');
 const moment = require('moment');
 class People extends Spider {
@@ -74,5 +73,4 @@ class People extends Spider {
         return null;
     }
 }
-let people = new People(SITE_CONF.people);
-module.exports = { People, people };
+module.exports = People;

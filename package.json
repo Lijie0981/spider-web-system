@@ -5,14 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test ./test --recursive",
-    "spider": "@powershell -Command $env:DEBUG='*'; node ./src/spider/Task.js",
-    "server": "@powershell -Command $env:DEBUG='*'; nodemon ./src/server/app.js"
+    "spider": "DEBUG=*:* node ./src/spider/app.js",
+    "server": "DEBUG=*:* nodemon ./src/server/app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lijie0981/spider-web-system.git"
   },
-  "author": "",
+  "author": "lijie0981",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Lijie0981/spider-web-system/issues"

@@ -1,5 +1,4 @@
 const { Spider } = require('../Spider');
-const SITE_CONF = require('../../config/site.js');
 const cheerio = require('cheerio');
 const moment = require('moment');
 class Sina extends Spider {
@@ -63,8 +62,7 @@ class Sina extends Spider {
         return null;
     }
 }
-let sina = new Sina(SITE_CONF.sina);
 // sina.init();
 // sina.parseHead();
 // sina.handleAllLinks();
-module.exports = { Sina, sina };
+module.exports = Sina;
