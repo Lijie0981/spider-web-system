@@ -40,7 +40,7 @@
     "socket.io": "^2.2.0",
     "superagent": "^4.1.0",
     "superagent-charset": "^1.2.0",
-    "url-parse": "^1.4.4"
+    "url-parse": "^1.5.0"
   },
   "devDependencies": {
     "eslint": "^5.15.3"
