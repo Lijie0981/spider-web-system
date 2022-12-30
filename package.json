@@ -29,7 +29,7 @@
     "express-session": "^1.15.6",
     "iconv-lite": "^0.4.24",
     "json-format": "^1.0.1",
-    "mocha": "^6.0.2",
+    "mocha": "^10.2.0",
     "moment": "^2.24.0",
     "mongodb": "^3.2.1",
     "mongoose": "^5.4.19",
